@@ -1,22 +1,26 @@
 SELECT timeofday();
-DROP SCHEMA Lab1 CASCADE;
+DROP SCHEMA Lab1
+CASCADE;
 CREATE SCHEMA Lab1;
 
-create table exchanges(
+create table exchanges
+(
     exchangeID char(6) primary key,
     exchangeName varchar(30),
     address varchar(30)
 );
 
-create table stocks(
+create table stocks
+(
     exchangeID char(6),
-    symbol char(3),
+    symbol char(4),
     stockName varchar(30),
     address varchar(30),
     primary key(exchangeID,symbol)
 );
 
-create table customers(
+create table customers
+(
     customerID int primary key,
     custName varchar(30),
     address varchar(30),
@@ -24,21 +28,23 @@ create table customers(
     isValidCustomer boolean
 );
 
-create table trades(
+create table trades
+(
     exchangeID char(6),
-    symbol char(3),
+    symbol char(4),
     tradeTS timestamp,
-    buyerID int,
-    sellerID int,
-    price decimal(5,2),
-    volume int,
+    buyerID integer,
+    sellerID integer,
+    price numeric(7,2),
+    volume integer,
     primary key(exchangeID,symbol,tradeTS)
 );
 
-create table quotes(
+create table quotes
+(
     exchangeID char(6),
-    symbol char(3),
+    symbol char(4),
     quoteTS timestamp,
-    price decimal(5,2),
+    price numeric(7,2),
     primary key(exchangeID,symbol,quoteTS)
 );
