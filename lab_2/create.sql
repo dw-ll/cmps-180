@@ -1,6 +1,4 @@
-SELECT timeofday();
-DROP SCHEMA Lab2
-CASCADE;
+DROP SCHEMA Lab2 CASCADE;
 CREATE SCHEMA Lab2;
 
 create table exchanges
