@@ -10,8 +10,13 @@ CHECK ((price * volume)>0);
 ALTER TABLE Trades
 ADD CONSTRAINT diff_id
 CHECK (buyerID <> sellerID);
--- Check when a Customer's category is H then they are a valid 
+-- Check when a Customer's category is H and they are a valid 
 -- customer as well
 ALTER TABLE Customers
-ADD CONSTRAINT h_flag CHECK ((category='H'AND isValidCustomer=TRUE));
+ADD CONSTRAINT h_flag 
+CHECK (category = 'H' AND  isValidCustomer=true
+        OR 
+      ((category !=  'H' OR category IS NULL) AND (isValidCustomer=true OR isValidCustomer=false OR isValidCustomer IS NULL)));
+
+
 
