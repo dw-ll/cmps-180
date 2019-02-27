@@ -1,4 +1,6 @@
 -- Case 2 where tuple ALREADY exists, check for customerID similarity.
+BEGIN TRANSACTION;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 UPDATE Customers
 SET custName = NewCustomers.custName, address=NewCustomers.address
 FROM NewCustomers
@@ -13,3 +15,5 @@ WHERE NOT EXISTS(SELECT *
     WHERE customerID = NewCustomers.customerID
     AND custName = NewCustomers.custName
     AND address = NewCustomers.address));
+
+COMMIT;
