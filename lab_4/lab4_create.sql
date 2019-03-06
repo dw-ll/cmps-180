@@ -13,7 +13,7 @@
         stockName   VARCHAR(30) UNIQUE NOT NULL,
         address     VARCHAR(30),
         PRIMARY KEY (exchangeID, symbol),
-        FOREIGN KEY exchangeID REFERENCES Exchanges(exchangeID)
+        FOREIGN KEY (exchangeID) REFERENCES Exchanges(exchangeID)
     );
 
     CREATE TABLE Customers (
@@ -34,8 +34,8 @@
         price       DECIMAL(7,2) NOT NULL, 
         volume      INTEGER NOT NULL,
         PRIMARY KEY (exchangeID, symbol, tradeTS),
-        FOREIGN KEY buyerID REFERENCES Customers(customerID),
-        FOREIGN KEY sellerID REFERENCES Customers(customerID),
+        FOREIGN KEY (buyerID) REFERENCES Customers(customerID),
+        FOREIGN KEY (sellerID) REFERENCES Customers(customerID),
         FOREIGN KEY (exchangeID, symbol) REFERENCES Stocks(exchangeID, symbol)
     );
 
@@ -50,6 +50,6 @@
 
     CREATE VIEW BuyerSellerTotalCost AS
         SELECT buyerID, sellerID, SUM(price*volume) AS totalCost
-	FROM Quotes
-	GROUP BY buyer, seller
+	FROM Trades
+	GROUP BY buyerID, sellerID
 	ORDER BY sum(price*volume) DESC;

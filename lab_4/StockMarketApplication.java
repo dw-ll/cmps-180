@@ -41,6 +41,13 @@ public class StockMarketApplication {
         List<Integer> result = new ArrayList<Integer>();
         // your code here
 
+        // If invalid argument is given.
+        if(numDifferentStocksSold <=0){
+            System.out.println("numDifferentStocksSold has to be greater than 0.");
+            System.exit(-1);
+        }
+
+
 
 
         // end of your code
@@ -57,6 +64,7 @@ public class StockMarketApplication {
 
     public int updateQuotesForBrexit(String theExchangeID)
     {
+        double euroToPounds = 0.85;
         // your code here; return 0 appears for now to allow this skeleton to compile.
         return 0;
 

@@ -28,9 +28,15 @@ public class RunStockMarketApplication
                                                      "jdbc:postgresql://cmps180-db.lt.ucsc.edu/daswilli",
                                                      "daswilli",
 													 "function02manager");
+			StockMarketApplication app = new StockMarketApplication(connection);
             
             if (connection != null)
-                System.out.println("Connected to the database!");
+				System.out.println("Connected to the database!");
+			double minStocksSold = 3.0;
+			List<Integer> custIds = new ArrayList<Interger>();
+			for(int id : custID){
+				System.out.println(id);
+			}
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.
