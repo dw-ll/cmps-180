@@ -40,15 +40,32 @@ public class StockMarketApplication {
     {
         List<Integer> result = new ArrayList<Integer>();
         // your code here
-
         // If invalid argument is given.
         if(numDifferentStocksSold <=0){
             System.out.println("numDifferentStocksSold has to be greater than 0.");
             System.exit(-1);
         }
+        // Create a new statement, set up a try-catch. Adapted from PostgreSQL driver doc.
+        System.out.println("----- Customers who sold at least " + numDifferentStocksSold + " stocks -----");
+        try{
+        Statement customerQuery = connection.createStatement();
+        ResultSet customerBag = customerQuery.executeQuery("SELECT DISTINCT COUNT(*), c.customerID FROM Customers c, Trades t WHERE t.sellerID = c.customerID GROUP BY c.customerID;");
+        Integer lineCount = 1;
+        while(customerBag.next()){
+
+           if(customerBag.getInt(1) >= numDifferentStocksSold){
+               result.add(customerBag.getInt(2));
+           }
+           else{
+               continue;
+           }
 
 
-
+        }
+        }
+        catch(Exception e){
+            return null;
+        }
 
         // end of your code
         return result;

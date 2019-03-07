@@ -32,11 +32,13 @@ public class RunStockMarketApplication
             
             if (connection != null)
 				System.out.println("Connected to the database!");
-			double minStocksSold = 3.0;
-			List<Integer> custIds = new ArrayList<Interger>();
-			for(int id : custID){
+			Integer StocksSold = 5;
+			
+			List<Integer> custIds = new ArrayList<Integer>();
+			custIds = app.getCustomersWhoSoldManyStocks(StocksSold);
+			for(int id : custIds){
 				System.out.println(id);
-			}
+			} 
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.
