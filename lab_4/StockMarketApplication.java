@@ -49,8 +49,7 @@ public class StockMarketApplication {
         System.out.println("----- Customers who sold at least " + numDifferentStocksSold + " stocks -----");
         try{
         Statement customerQuery = connection.createStatement();
-        ResultSet customerBag = customerQuery.executeQuery("SELECT DISTINCT COUNT(*), c.customerID FROM Customers c, Trades t WHERE t.sellerID = c.customerID GROUP BY c.customerID;");
-        Integer lineCount = 1;
+        ResultSet customerBag = customerQuery.executeQuery("SELECT COUNT(DISTINCT t.symbol), c.customerID FROM Trades t, Customers c  WHERE c.customerID = t.sellerID GROUP BY c.customerID;");
         while(customerBag.next()){
 
            if(customerBag.getInt(1) >= numDifferentStocksSold){
