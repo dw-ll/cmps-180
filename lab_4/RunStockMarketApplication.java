@@ -32,8 +32,8 @@ public class RunStockMarketApplication
             
             if (connection != null)
 				System.out.println("Connected to the database!");
-			Integer StocksSold = 5;
-			
+			Integer StocksSold = 6;
+		
 			List<Integer> custIds = new ArrayList<Integer>();
 			custIds = app.getCustomersWhoSoldManyStocks(StocksSold);
 			for(int id : custIds){
