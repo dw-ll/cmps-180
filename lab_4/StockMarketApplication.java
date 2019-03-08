@@ -80,11 +80,21 @@ public class StockMarketApplication {
 
     public int updateQuotesForBrexit(String theExchangeID)
     {
-        double euroToPounds = 0.85;
+      
+        int rowsConverted =0;
         // your code here; return 0 appears for now to allow this skeleton to compile.
-        return 0;
-
-
+        // Code adapted from "Performing Updates"  in the PostgreSql JDBC docs.
+        try{
+            PreparedStatement quoteUpdate = connection.prepareStatement("UPDATE Quotes SET price = price *0.87 WHERE exchangeID = ?");
+            quoteUpdate.setString(1, theExchangeID);
+            rowsConverted = quoteUpdate.executeUpdate();
+            System.out.println("Number of quotes from "+theExchangeID+" converted due to Brexit: "+ rowsConverted);
+        }
+        catch(Exception e){
+            System.out.println("updateQuotesForBrexit ran into the error: "+e);
+            System.exit(-1);
+        }
+        return rowsConverted;
 
         // end of your code
     }

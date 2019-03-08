@@ -32,12 +32,16 @@ public class RunStockMarketApplication
             
             if (connection != null)
 				System.out.println("Connected to the database!");
-			Integer StocksSold = 6;
+			Integer StocksSold = 4;
 			List<Integer> custIds = new ArrayList<Integer>();
 			custIds = app.getCustomersWhoSoldManyStocks(StocksSold);
+			if(custIds.isEmpty()){
+				System.out.println("Nobody sold that many stocks.");
+			}
 			for(int id : custIds){
 				System.out.println(id);
 			} 
+			app.updateQuotesForBrexit("NYSE");
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.
