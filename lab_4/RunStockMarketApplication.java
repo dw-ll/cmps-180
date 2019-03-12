@@ -29,6 +29,7 @@ public class RunStockMarketApplication
                                                      "daswilli",
 													 "function02manager");
 			StockMarketApplication app = new StockMarketApplication(connection);
+
             
             if (connection != null)
 				System.out.println("Connected to the database!");
@@ -42,6 +43,7 @@ public class RunStockMarketApplication
 				System.out.println(id);
 			} 
 			app.updateQuotesForBrexit("NYSE");
+			app.rewardBestBuyers(1456, 2);
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.
