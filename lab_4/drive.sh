@@ -1,1 +1,0 @@
-echo export CLASSPATH=/Users/dan/Desktop/180/lab_4/RunStockMarketApplication.java:/Users/dan/Desktop/180/lab_4/postgresql-42.2.5.jar:.
