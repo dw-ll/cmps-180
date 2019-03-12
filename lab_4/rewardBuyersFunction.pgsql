@@ -1,15 +1,17 @@
 CREATE FUNCTION rewardBuyersFunction(
     IN theSellerID INTEGER,
     IN theCount INTEGER
-)
+)  
     RETURNS INTEGER AS $$
+    -- Define a cursor using a query on BuyerSellerTotalCost, Trades, and Customers to 
+    -- populate cursor with necessary info 
     DECLARE sellerRelation CURSOR 
     FOR SELECT DISTINCT b1.sellerID, b1.buyerID, b1.totalCost, c.category
     FROM Trades t, Customers c, BuyerSellerTotalCost b1
     WHERE b1.buyerID = c.customerID
     GROUP BY b1.sellerID, b1.buyerID, b1.totalCost, c.category
     ORDER BY b1.totalCost DESC;
-    -- Local Var
+    -- Local Variables
     currentSeller INTEGER;
     currentBuyer INTEGER;
     theCost INTEGER;
@@ -18,13 +20,17 @@ CREATE FUNCTION rewardBuyersFunction(
     rewarded INTEGER := 0;
     rowsUpped INTEGER := 0;
     BEGIN
+    -- Open created cursor
     OPEN sellerRelation;
   
     LOOP  
+    -- Load current attributes of cursor into local vars
     FETCH sellerRelation INTO currentSeller,currentBuyer,theCost,buyerCategory;
-
+    -- Move if tuple does not exist
     EXIT WHEN NOT FOUND;
+    -- We've reached the right amount of different customers, our job is done
     IF numberOfRewards > theCount THEN EXIT; END IF;
+    -- If not, do the required updates below
 -- Higher category
     IF buyerCategory='H' THEN 
     UPDATE Trades t
@@ -60,6 +66,7 @@ CREATE FUNCTION rewardBuyersFunction(
     numberOfRewards:=numberOfRewards+1;
     END IF;
     END LOOP;
+    -- Return the amount of rows theSeller rewarded
     RETURN rewarded;
 
     END; $$
