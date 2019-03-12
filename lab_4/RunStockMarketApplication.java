@@ -42,37 +42,53 @@ public class RunStockMarketApplication
 				System.out.println("Nobody sold that many stocks.");
 			}
 			// Test output below
-			System.out.print("/*\n/* Output of getCustomersWhoSoldManyStocks\n/* when the parameter of numDifferentStocksSold is "+ numDifferentStocksSold +".\n");			
+			/*
+			 * /* Output of getCustomersWhoSoldManyStocks 
+			 * /* when the parameter of numDifferentStocksSold is 4.
+			 *    1456 1489 9731
+			 */
+			System.out.println("----- Customers who sold at least " + numDifferentStocksSold + " stocks -----");			
 			for(int id : custIds){
 				System.out.println(id);
 			} 
-			System.out.println("*/\n");
+			
 
+
+		// UPDATE QUOTES FOR BREXIT //
 
 
 			// updateQuotesForBrexit call and variables 
 			String theExchangeID = "LSE   ";
 			// Test Output
-			System.out.print(
-					"/*\n/* Output of updateQuotesForBrexit when theExchangeID is "
-							+ theExchangeID + ".\n");
-			app.updateQuotesForBrexit(theExchangeID);
-			System.out.println("*/\n");
+			/* Output of updateQuotesForBrexit when theExchangeID is LSE   .
+			*
+			*/
+			int rowsConverted = app.updateQuotesForBrexit(theExchangeID);
+			System.out.println("Number of quotes from '" + theExchangeID + "' converted due to Brexit: " + rowsConverted);
+			
 
 
+        // REWARD BEST BUYERS //
 
 			// rewardBestBuyers call and variables
 			int theSeller1 = 1456;
 			int theCount1 = 2;
 			int theCount2 = 4;
 			// Test Output
-			System.out.print("/*\n/* Output of rewardBestBuyers when theSellerID is "+theSeller1+" and theCount is "+ theCount1+".\n");
+			/*
+			 * Output of rewardBestBuyers when theSellerID is 1456 and theCount is 2. 
+			 * 7
+			 */
+
+			/*
+			 * /* Output of rewardBestBuyers when theSellerID is 1456 and theCount is 4. 
+			 * 8
+			 */
 			int rowsRewarded1 = app.rewardBestBuyers(theSeller1, theCount1);
-			System.out.println(rowsRewarded1 + "\n /*\n");
-			System.out.print("/*\n/* Output of rewardBestBuyers when theSellerID is " + theSeller1 + " and theCount is "
-					+ theCount2 + ".\n");
+			System.out.println(rowsRewarded1 + " trades updated that were sold by " + theSeller1 + " with theCount equal to "+ theCount1);
 			int rowsRewarded2 = app.rewardBestBuyers(theSeller1, theCount2);
-			System.out.println(rowsRewarded2 + "\n /*\n");
+			System.out.println(rowsRewarded2 + " trades updated that were sold by " + theSeller1
+					+ " with theCount equal to " + theCount2);
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.
