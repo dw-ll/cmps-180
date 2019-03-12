@@ -9,17 +9,20 @@ CREATE FUNCTION rewardBuyersFunction(
     WHERE b1.buyerID = c.customerID
     GROUP BY b1.sellerID, b1.buyerID, b1.totalCost, c.category
     ORDER BY b1.totalCost DESC;
+    -- Local Var
+    currentSeller INTEGER;
     currentBuyer INTEGER;
     theCost INTEGER;
     buyerCategory CHAR(1);
     numberOfRewards INTEGER := 0;
     rewarded INTEGER := 0;
     rowsUpped INTEGER := 0;
-
     BEGIN
     OPEN sellerRelation;
-    LOOP 
-    FETCH sellerRelation INTO theSellerID,currentBuyer,theCost,buyerCategory;
+  
+    LOOP  
+    FETCH sellerRelation INTO currentSeller,currentBuyer,theCost,buyerCategory;
+
     EXIT WHEN NOT FOUND;
     IF numberOfRewards > theCount THEN EXIT; END IF;
 -- Higher category
@@ -32,7 +35,7 @@ CREATE FUNCTION rewardBuyersFunction(
     numberOfRewards:=numberOfRewards+1;
     
 -- Medium Category 
-    ELSIF buyerCategory='H' THEN 
+    ELSIF buyerCategory='M' THEN 
     UPDATE Trades t
     SET volume = volume + 20
     WHERE t.sellerID = theSellerID AND t.buyerID = currentBuyer;
@@ -40,7 +43,7 @@ CREATE FUNCTION rewardBuyersFunction(
     rewarded:=rewarded+rowsUpped;
     numberOfRewards:=numberOfRewards+1;
 -- Low Category 
-    ELSIF buyerCategory='H' THEN 
+    ELSIF buyerCategory='L' THEN 
     UPDATE Trades t
     SET volume = volume + 5
     WHERE t.sellerID = theSellerID AND t.buyerID = currentBuyer;
