@@ -46,13 +46,13 @@ public class StockMarketApplication {
         }
         // Create a new statement, set up a try-catch. Adapted from PostgreSQL driver
         // doc.
-        System.out.println("----- Customers who sold at least " + numDifferentStocksSold + " stocks -----");
         try {
             Statement customerQuery = connection.createStatement();
             ResultSet customerBag = customerQuery.executeQuery(
                     "SELECT COUNT(DISTINCT t.symbol), c.customerID FROM Trades t, Customers c  WHERE c.customerID = t.sellerID GROUP BY c.customerID;");
             while (customerBag.next()) {
-
+                // Iterate through the ResultSet and if the current COUNT is greater than 
+                // numDifferentStocks sold, add it to our result list. Else move on.
                 if (customerBag.getInt(1) >= numDifferentStocksSold) {
                     result.add(customerBag.getInt(2));
                 } else {
@@ -82,18 +82,20 @@ public class StockMarketApplication {
         // your code here; return 0 appears for now to allow this skeleton to compile.
         // Code adapted from "Performing Updates" in the PostgreSql JDBC docs.
         try {
+            // Set up a prepared statement which will be used to update the database
+            // where conditions are met.
             PreparedStatement quoteUpdate = connection
                     .prepareStatement("UPDATE Quotes SET price = price *0.87 WHERE exchangeID = ?");
+            // use setString to assign theExchangeID to the wildcard in the above update statement.
             quoteUpdate.setString(1, theExchangeID);
+            // Execute the update and save the amount of rows that were update. Close the statement.
             rowsConverted = quoteUpdate.executeUpdate();
-            System.out.println("Number of quotes from " + theExchangeID + " converted due to Brexit: " + rowsConverted);
             quoteUpdate.close();
         } catch (Exception e) {
             System.out.println("updateQuotesForBrexit ran into the error: " + e);
             System.exit(-1);
         }
         return rowsConverted;
-
         // end of your code
     }
 
@@ -122,22 +124,24 @@ public class StockMarketApplication {
         int storedFunctionResult = 0;
 
         // your code here
+        // Code adapted from "Performing Updates" in the PostgreSql JDBC docs.
         try {
+            // Set up another prepared statement to call upon rewardBuyersFunction
+            // given a particular set of parameters
             PreparedStatement rewardBuyers = connection.prepareStatement("SELECT * FROM rewardBuyersFunction(?,?);");
+            // Assign those parameters to the wildcards in rewardBuyersFunction (theSellerId, theCount)
             rewardBuyers.setInt(1, theSellerID);
             rewardBuyers.setInt(2, theCount);
+            // Set up a result set to look at the row returned by the query.
             ResultSet rewardBag = rewardBuyers.executeQuery();
+            // Had a bug with ResultSet, so I used .next() to position it correctly.
             rewardBag.next();
-            storedFunctionResult = rewardBag.getInt(1);
-            System.out.println(storedFunctionResult + " trades updated that were sold by " + theSellerID);
-           
-           
+            // Define the return variable to be the value in the row returned.
+            storedFunctionResult = rewardBag.getInt(1);          
         } catch (Exception e) {
             System.out.println("rewardBestBuyers ran into the error: " + e);
             System.exit(-1);
         }
-
-
         // end of your code
         return storedFunctionResult;
 

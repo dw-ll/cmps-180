@@ -29,21 +29,50 @@ public class RunStockMarketApplication
                                                      "daswilli",
 													 "function02manager");
 			StockMarketApplication app = new StockMarketApplication(connection);
-
-            
             if (connection != null)
 				System.out.println("Connected to the database!");
-			Integer StocksSold = 4;
+
+			// getCustomersWhoSoldManyStocks call and variables
+			int numDifferentStocksSold = 4;
+			// Fill list with ID's returned by getCustomers
 			List<Integer> custIds = new ArrayList<Integer>();
-			custIds = app.getCustomersWhoSoldManyStocks(StocksSold);
+			custIds = app.getCustomersWhoSoldManyStocks(numDifferentStocksSold);
+			// Some error checking.
 			if(custIds.isEmpty()){
 				System.out.println("Nobody sold that many stocks.");
 			}
+			// Test output below
+			System.out.print("/*\n/* Output of getCustomersWhoSoldManyStocks\n/* when the parameter of numDifferentStocksSold is "+ numDifferentStocksSold +".\n");			
 			for(int id : custIds){
 				System.out.println(id);
 			} 
-			app.updateQuotesForBrexit("NYSE");
-			app.rewardBestBuyers(1456, 2);
+			System.out.println("*/\n");
+
+
+
+			// updateQuotesForBrexit call and variables 
+			String theExchangeID = "LSE   ";
+			// Test Output
+			System.out.print(
+					"/*\n/* Output of updateQuotesForBrexit when theExchangeID is "
+							+ theExchangeID + ".\n");
+			app.updateQuotesForBrexit(theExchangeID);
+			System.out.println("*/\n");
+
+
+
+			// rewardBestBuyers call and variables
+			int theSeller1 = 1456;
+			int theCount1 = 2;
+			int theCount2 = 4;
+			// Test Output
+			System.out.print("/*\n/* Output of rewardBestBuyers when theSellerID is "+theSeller1+" and theCount is "+ theCount1+".\n");
+			int rowsRewarded1 = app.rewardBestBuyers(theSeller1, theCount1);
+			System.out.println(rowsRewarded1 + "\n /*\n");
+			System.out.print("/*\n/* Output of rewardBestBuyers when theSellerID is " + theSeller1 + " and theCount is "
+					+ theCount2 + ".\n");
+			int rowsRewarded2 = app.rewardBestBuyers(theSeller1, theCount2);
+			System.out.println(rowsRewarded2 + "\n /*\n");
 
             /* Include your code below to test the methods of the StockMarketApplication class
              * The sample code in RunStoresApplication.java should be useful.

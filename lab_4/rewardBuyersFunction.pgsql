@@ -12,6 +12,7 @@ CREATE FUNCTION rewardBuyersFunction(
     GROUP BY b1.sellerID, b1.buyerID, b1.totalCost, c.category
     ORDER BY b1.totalCost DESC;
     -- Local Variables
+   
     currentSeller INTEGER;
     currentBuyer INTEGER;
     theCost INTEGER;
