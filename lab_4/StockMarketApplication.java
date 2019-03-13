@@ -1,7 +1,6 @@
 import java.sql.*;
 import java.util.*;
 
-
 /**
  * The class implements methods of the StockMarket database interface.
  *
@@ -51,7 +50,7 @@ public class StockMarketApplication {
             ResultSet customerBag = customerQuery.executeQuery(
                     "SELECT COUNT(DISTINCT t.symbol), c.customerID FROM Trades t, Customers c  WHERE c.customerID = t.sellerID GROUP BY c.customerID;");
             while (customerBag.next()) {
-                // Iterate through the ResultSet and if the current COUNT is greater than 
+                // Iterate through the ResultSet and if the current COUNT is greater than
                 // numDifferentStocks sold, add it to our result list. Else move on.
                 if (customerBag.getInt(1) >= numDifferentStocksSold) {
                     result.add(customerBag.getInt(2));
@@ -78,6 +77,10 @@ public class StockMarketApplication {
 
     public int updateQuotesForBrexit(String theExchangeID) {
 
+        if(theExchangeID == null || theExchangeID.length() > 6){
+            System.out.println("Invalid exhchangeID for updateQuotesForBrexit.");
+            System.exit(-1);
+        }
         int rowsConverted = 0;
         // your code here; return 0 appears for now to allow this skeleton to compile.
         // Code adapted from "Performing Updates" in the PostgreSql JDBC docs.
@@ -86,9 +89,11 @@ public class StockMarketApplication {
             // where conditions are met.
             PreparedStatement quoteUpdate = connection
                     .prepareStatement("UPDATE Quotes SET price = price *0.87 WHERE exchangeID = ?");
-            // use setString to assign theExchangeID to the wildcard in the above update statement.
+            // use setString to assign theExchangeID to the wildcard in the above update
+            // statement.
             quoteUpdate.setString(1, theExchangeID);
-            // Execute the update and save the amount of rows that were update. Close the statement.
+            // Execute the update and save the amount of rows that were update. Close the
+            // statement.
             rowsConverted = quoteUpdate.executeUpdate();
             quoteUpdate.close();
         } catch (Exception e) {
@@ -121,6 +126,10 @@ public class StockMarketApplication {
 
     public int rewardBestBuyers(int theSellerID, int theCount) {
         // There's nothing special about the name storedFunctionResult
+        if(theCount < 0){
+            System.out.println("Invalid input for theCount for rewardBestBuyers.");
+            System.exit(-1);
+        }
         int storedFunctionResult = 0;
 
         // your code here
@@ -129,7 +138,8 @@ public class StockMarketApplication {
             // Set up another prepared statement to call upon rewardBuyersFunction
             // given a particular set of parameters
             PreparedStatement rewardBuyers = connection.prepareStatement("SELECT * FROM rewardBuyersFunction(?,?);");
-            // Assign those parameters to the wildcards in rewardBuyersFunction (theSellerId, theCount)
+            // Assign those parameters to the wildcards in rewardBuyersFunction
+            // (theSellerId, theCount)
             rewardBuyers.setInt(1, theSellerID);
             rewardBuyers.setInt(2, theCount);
             // Set up a result set to look at the row returned by the query.
@@ -137,7 +147,7 @@ public class StockMarketApplication {
             // Had a bug with ResultSet, so I used .next() to position it correctly.
             rewardBag.next();
             // Define the return variable to be the value in the row returned.
-            storedFunctionResult = rewardBag.getInt(1);          
+            storedFunctionResult = rewardBag.getInt(1);
         } catch (Exception e) {
             System.out.println("rewardBestBuyers ran into the error: " + e);
             System.exit(-1);
